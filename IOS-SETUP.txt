@@ -1,0 +1,87 @@
+LIFT AS A NATIVE iOS APP — FREE, NO MAC
+=========================================
+
+What you get over the PWA:
+  ✓ Rest timer ALARM on the lock screen (the big one)
+  ✓ A "real" app that iOS can't evict data from as easily
+  (Stage 2, later: Apple Watch heart-rate/calories via Apple Health)
+
+What it costs: $0, but the app must be "refreshed" every 7 days
+(SideStore does this automatically in the background; details in Part D).
+
+======================================================================
+PART A — BUILD THE .ipa IN THE CLOUD  (~15 min first time, no Mac)
+======================================================================
+ 1. Create a free account at https://github.com if you don't have one.
+ 2. Click "+" (top right) > New repository.
+      Name: lift-ios      Visibility: PUBLIC  (public = free unlimited
+      Mac build minutes; the code contains no secrets — your Sheets
+      URL/secret live only inside the app on your phone)
+      Do NOT tick "Add a README".
+ 3. On the new repo page: "uploading an existing file" link.
+      Unzip lift-ios.zip on your laptop, then drag EVERYTHING inside
+      the lift-ios folder into the upload box — including the .github
+      folder (it must keep its structure: .github/workflows/build-ios.yml).
+      Commit changes.
+      * If drag-drop flattens folders: use GitHub's "Add file > Upload
+        files" inside each folder path, or install GitHub Desktop.
+ 4. Go to the "Actions" tab > enable workflows if prompted >
+      click "Build iOS IPA" > "Run workflow" > Run.
+ 5. Wait ~10-15 minutes for the green tick. Click the run, scroll to
+      "Artifacts", download  Lift-ipa.zip , unzip it -> you have  Lift.ipa
+
+======================================================================
+PART B — ONE-TIME SIDESTORE SETUP ON YOUR IPHONE  (~20-30 min)
+======================================================================
+ SideStore's steps occasionally change, so follow the official guide:
+      https://docs.sidestore.io   ("Getting Started")
+ The gist of what you'll do:
+ 1. On your Windows laptop, install iTunes and iCloud — the versions
+      from Apple's website, NOT the Microsoft Store versions.
+ 2. Follow the guide to install the SideStore app onto your iPhone
+      (uses a small tool over USB) and generate a "pairing file".
+ 3. On the iPhone: Settings > Privacy & Security > Developer Mode > On
+      (phone restarts). Also install SideStore's LocalDevVPN profile
+      when the guide tells you to.
+ 4. Sign into SideStore with an Apple ID. TIP: it works fine with your
+      main Apple ID, but if you prefer, create a spare Apple ID just
+      for signing.
+ After this, the laptop is no longer needed for weekly refreshes.
+
+======================================================================
+PART C — INSTALL LIFT
+======================================================================
+ 1. Get Lift.ipa onto your iPhone: easiest is to upload it to iCloud
+      Drive / Google Drive from the laptop, then open the Files app.
+ 2. Open SideStore > My Apps > "+" > pick Lift.ipa.
+ 3. SideStore signs it with your Apple ID and installs. The Lift icon
+      (blue dumbbell) appears on your home screen.
+ 4. First workout: iOS will ask to allow notifications — tap Allow.
+      That's what makes the rest alarm ring on the lock screen.
+
+ MOVE YOUR DATA FROM THE PWA (important):
+ The native app starts EMPTY — it does not share storage with the PWA.
+ In the PWA: Profile > Export backup (.json), save to Files.
+ In native Lift: Profile > Import backup, pick that file. Done —
+ workouts, routines, custom exercises, and your Sheets sync settings
+ all come across.
+
+======================================================================
+PART D — THE WEEKLY REALITY
+======================================================================
+ - Free Apple ID signatures expire every 7 days. SideStore auto-
+   refreshes in the background; usually you never notice.
+ - Once in a while, open SideStore and check "My Apps" — if Lift shows
+   few days remaining, tap Refresh. Takes ~10 seconds, data untouched.
+ - If it ever fully expires, Lift won't open until you refresh it in
+   SideStore. Your data is safe throughout.
+ - KEEP THE PWA on your home screen as a fallback. It never expires.
+   (Export a .json backup regularly; you can import it into either.)
+
+======================================================================
+UPDATING THE APP LATER
+======================================================================
+ When you get a new version: replace the changed files in the GitHub
+ repo (usually just www/index.html), the build runs automatically,
+ download the new Lift.ipa, install via SideStore > "+" — it updates
+ in place, keeping your data.

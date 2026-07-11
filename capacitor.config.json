@@ -1,0 +1,14 @@
+{
+  "appId": "com.darren.lift",
+  "appName": "Lift",
+  "webDir": "www",
+  "backgroundColor": "#0d0e10",
+  "ios": {
+    "contentInset": "automatic"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "presentationOptions": []
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "lift-ios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lift workout tracker - native iOS shell",
+  "dependencies": {
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/local-notifications": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/assets": "^3.0.5"
+  }
+}
