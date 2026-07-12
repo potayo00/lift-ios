@@ -234,7 +234,7 @@ const DEFAULT_EXERCISES = [
   ["Plank","Core"],["Crunch","Core"],["Hanging Leg Raise","Core"],["Cable Crunch","Core"],
   ["Russian Twist","Core"],["Ab Wheel","Core"],
   ["Running","Cardio"],["Cycling","Cardio"],["Rowing Machine","Cardio"],["Stair Climber","Cardio"],
-].map((e,i)=>({id:"d"+i, name:e[0], muscle:e[1], custom:false}));
+].map((e,i)=>({id:"d"+i, name:e[0], muscle:e[1], custom:false, img:"eximg/d"+i+".jpg"}));
 
 const KEY="lift_data_v1", AKEY="lift_active_v1";
 let state={ exercises:[], routines:[], workouts:[], settings:{unit:"kg"}, tab:"workout" };
@@ -263,10 +263,11 @@ const MUSCLE_ICON={
   Cardio:'<svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-9-9c-1.3-3 1-7 4.5-7C10 4 12 6.5 12 6.5S14 4 16.5 4C20 4 22.3 8 21 11c-2 4.5-9 9-9 9z"/><path d="M3 12h5l2-3 3 5 2-3h6"/></svg>'
 };
 function exThumb(x){
-  if(x&&x.img) return `<div class="exthumb"><img src="${x.img}" alt=""></div>`;
   const ic=(x&&MUSCLE_ICON[x.muscle])||MUSCLE_ICON.Core;
+  if(x&&x.img) return `<div class="exthumb"><img src="${x.img}" alt="" loading="lazy" onerror="this.parentNode.innerHTML=window.__thumbFallback('${(x.muscle||"Core").replace(/[^A-Za-z]/g,"")}')"></div>`;
   return `<div class="exthumb">${ic}</div>`;
 }
+window.__thumbFallback=(m)=>MUSCLE_ICON[m]||MUSCLE_ICON.Core;
 
 /* ---------- sound + wake lock ---------- */
 let audioCtx=null;
@@ -332,8 +333,12 @@ function load(){
   if(!state.settings) state.settings={unit:"kg"};
   if(!state.settings.sync) state.settings.sync={url:"",secret:"",on:false};
   // ensure defaults present (by id)
-  const have=new Set(state.exercises.map(x=>x.id));
-  DEFAULT_EXERCISES.forEach(d=>{ if(!have.has(d.id)) state.exercises.push({...d}); });
+  const have=new Map(state.exercises.map(x=>[x.id,x]));
+  DEFAULT_EXERCISES.forEach(d=>{
+    const ex=have.get(d.id);
+    if(!ex) state.exercises.push({...d});
+    else if(!ex.img&&d.img) ex.img=d.img;   // migration: give stored defaults their image
+  });
   if(!state.exercises.length) state.exercises=DEFAULT_EXERCISES.map(x=>({...x}));
   try{ const a=localStorage.getItem(AKEY); if(a) active=JSON.parse(a); }catch(e){}
 }
@@ -872,8 +877,9 @@ function openExMenu(ei,isRoutine){
   const e=list[ei]; const x=isRoutine?exById(e.exId):e;
   const name=x?x.name:"Exercise";
   const p=isRoutine?"r":"";
+  const big=(x&&x.img)?`<div style="display:flex;justify-content:center;padding:6px 0 10px"><img src="${x.img}" alt="" style="max-width:190px;max-height:150px;border-radius:14px;background:#fff" onerror="this.parentNode.style.display='none'"></div>`:"";
   $("#sheetInner").innerHTML=`<div class="sheet-head"><div class="t">${esc(name)}</div><button class="linkbtn" data-act="closeSheet">Done</button></div>
-  <div class="sheet-body">
+  <div class="sheet-body">${big}
     <div class="exrow ${ei===0?'':''}" data-act="${p}moveEx" data-ex="${ei}" data-dir="-1"><div class="n" style="${ei===0?'color:var(--faint)':''}">▲ Move up</div></div>
     <div class="exrow" data-act="${p}moveEx" data-ex="${ei}" data-dir="1"><div class="n" style="${ei===list.length-1?'color:var(--faint)':''}">▼ Move down</div></div>
     <div class="divider"></div>

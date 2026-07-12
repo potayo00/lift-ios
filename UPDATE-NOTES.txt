@@ -9,6 +9,9 @@ Changed files — REPLACE these in your lift-ios repo:
   .github/workflows/build-ios.yml
 
 NEW files/folders — ADD these:
+  www/eximg/                          (54 exercise images — drag the whole
+                                       eximg folder into www/ via
+                                       Add file > Upload files)
   app.entitlements                    (repo root)
   healthdata-plugin/                  (whole folder: package.json, index.js,
                                        LiftHealthdata.podspec,
