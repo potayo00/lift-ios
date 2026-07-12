@@ -15,13 +15,18 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm install
 
       - name: Add iOS platform
         run: npx cap add ios
+
+      - name: Add HealthKit usage descriptions to Info.plist
+        run: |
+          /usr/libexec/PlistBuddy -c "Add :NSHealthShareUsageDescription string Lift reads your workouts, heart rate and calories from Apple Health to attach them to your gym sessions." ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Add :NSHealthUpdateUsageDescription string Lift does not write data to Apple Health." ios/App/App/Info.plist
 
       - name: Generate app icons and splash screens
         run: npx @capacitor/assets generate --ios
@@ -40,10 +45,17 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO
 
-      - name: Package IPA
+      - name: Embed HealthKit entitlement (fake-sign with ldid)
         run: |
+          brew install ldid
           mkdir Payload
           cp -r build/Build/Products/Release-iphoneos/App.app Payload/
+          ldid -Sapp.entitlements Payload/App.app/App
+          echo "entitlements embedded:"
+          ldid -e Payload/App.app/App || true
+
+      - name: Package IPA
+        run: |
           zip -r Lift.ipa Payload
           ls -la Lift.ipa
 
