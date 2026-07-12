@@ -1,0 +1,41 @@
+UPDATING YOUR GITHUB REPO FOR v2 (Apple Health + UI overhaul)
+=============================================================
+
+Changed files — REPLACE these in your lift-ios repo:
+  www/index.html
+  www/sw.js
+  package.json
+  capacitor.config.json
+  .github/workflows/build-ios.yml
+
+NEW files/folders — ADD these:
+  app.entitlements                    (repo root)
+  healthdata-plugin/                  (whole folder: package.json, index.js,
+                                       LiftHealthdata.podspec,
+                                       ios/Plugin/HealthPlugin.swift)
+
+Easiest way on the GitHub website:
+  - For each changed file: open it in the repo > pencil icon > select all,
+    paste the new content > Commit. (Or delete + re-upload.)
+  - For new files: Add file > Create new file, and type the full path
+    (e.g. healthdata-plugin/ios/Plugin/HealthPlugin.swift) — typing the
+    slashes creates the folders.
+  - Tip: "Add file > Upload files" also works for whole folders if you
+    drag the healthdata-plugin folder in.
+
+Then: Actions > Build iOS IPA > Run workflow > download the new Lift.ipa
+> install via SideStore ("+" in My Apps). It updates in place; your data
+stays.
+
+AFTER INSTALLING — Apple Health:
+  1. Profile > Apple Health > Connect. iOS shows the Health permission
+     screen — turn ON: Workouts, Heart Rate, Active Energy.
+     (EXPERIMENTAL on sideloaded builds: if the app crashes or errors
+     when you tap Connect, the free-signing path stripped the HealthKit
+     entitlement — tell Claude, everything else keeps working.)
+  2. At the gym: start any workout on your Apple Watch (e.g. Traditional
+     Strength Training) alongside Lift. The watch records heart rate +
+     calories to Apple Health.
+  3. When you finish in Lift, it auto-pulls the watch session a few
+     seconds later (♥ avg and kcal chips appear on the workout).
+     You can also open any workout in History > "Pull Apple Watch data".

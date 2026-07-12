@@ -1,0 +1,15 @@
+{
+  "name": "lift-healthdata",
+  "version": "1.0.0",
+  "description": "Minimal HealthKit bridge for Lift (read workouts, heart rate, active calories)",
+  "main": "index.js",
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    }
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=7.0.0"
+  },
+  "files": ["ios/", "index.js", "LiftHealthdata.podspec"]
+}
